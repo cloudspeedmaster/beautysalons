@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serenity Beauty Salon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#f9a8d4',
+                        secondary: '#f472b6',
+                        accent: '#fdf2f8',
+                        dark: '#4a044e'
+                    },
+                    fontFamily: {
+                        'playfair': ['"Playfair Display"', 'serif'],
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'poppins', sans-serif; }
+        .hero-section { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://i.imgur.com/pj764gY.png'); background-size: cover; background-position: center; }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(249, 168, 212, 0.1), 0 10px 10px -5px rgba(249, 168, 212, 0.04); }
+        .gallery-img { transition: all 0.4s ease; }
+        .gallery-img:hover { transform: scale(1.05); z-index: 10; }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: #f472b6; transition: width 0.3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .form-input { transition: all 0.3s ease; }
+        .form-input:focus { border-color: #f472b6; box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.25); }
+        .sub-services { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
+        .service-card.active .sub-services { max-height: 500px; }
+        .service-card.active .details-arrow { transform: rotate(90deg); }
+
+        /* Floating UI Elements */
+        .language-switcher { position: fixed; bottom: 20px; left: 20px; z-index: 50; }
+        .language-switcher .options { display: none; }
+        .language-switcher.active .options { display: block; }
+        .social-floater { position: fixed; bottom: 20px; right: 20px; z-index: 50; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+        .social-icon { opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
+        .social-floater.active .social-icon { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-accent">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white bg-opacity-95 shadow-md z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#home" class="flex items-center">
+                <i class="fa-solid fa-spa text-secondary text-3xl"></i>
+                <h1 class="ml-2 text-2xl font-playfair font-bold text-dark" data-translate="studio_name">Serenity</h1>
+            </a>
+            <div class="hidden md:flex space-x-8" id="desktop-nav">
+                <!-- Nav links are injected by JS -->
+            </div>
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-gray-700 focus:outline-none"><i class="fas fa-bars text-xl"></i></button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 py-3 shadow-inner">
+            <div class="flex flex-col space-y-3" id="mobile-nav">
+                <!-- Mobile nav links are injected by JS -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section min-h-screen flex items-center pt-16">
+        <div class="container mx-auto px-4 text-center text-white">
+            <h1 class="text-4xl md:text-5xl lg:text-7xl font-playfair font-bold leading-tight mb-4" data-translate="hero_title">Discover Your Natural Beauty</h1>
+            <p class="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl mx-auto" data-translate="hero_subtitle">Experience luxury treatments that rejuvenate your body and soul. Our expert stylists are dedicated to enhancing your natural beauty.</p>
+            <a href="#contact" class="bg-secondary hover:bg-primary text-white text-lg font-medium py-3 px-10 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl" data-translate="hero_btn">Book Appointment</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-playfair font-bold text-dark mb-4" data-translate="services_title">Our Premium Services</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto" data-translate="services_subtitle">Discover our range of luxury treatments designed to pamper, rejuvenate, and enhance your natural beauty.</p>
+                <div class="w-24 h-1 bg-secondary mx-auto mt-6"></div>
+            </div>
+            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Services are injected here by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-accent">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2 mb-10 lg:mb-0">
+                    <img src="https://i.imgur.com/3A3Th66.png" alt="About Serenity Salon" class="rounded-lg shadow-2xl w-full">
+                </div>
+                <div class="lg:w-1/2 lg:pl-10">
+                    <h2 class="text-3xl md:text-4xl font-playfair font-bold text-dark mb-6" data-translate="about_title">About Serenity Beauty Salon</h2>
+                    <p class="text-gray-600 mb-6" data-translate="about_p1">Founded in 2010, Serenity Beauty Salon has been dedicated to providing exceptional beauty services in a relaxing and luxurious environment. Our mission is to enhance your natural beauty and boost your confidence through our premium treatments.</p>
+                    <p class="text-gray-600 mb-8" data-translate="about_p2">Our team of certified professionals is passionate about beauty and committed to delivering personalized services that meet your unique needs. We use only the highest quality products that are gentle on your skin and environmentally friendly.</p>
+                    <a href="#contact" class="inline-block bg-secondary hover:bg-primary text-white font-medium py-3 px-8 rounded-full transition-colors duration-300 shadow-md hover:shadow-lg" data-translate="about_btn">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-playfair font-bold text-dark mb-4" data-translate="gallery_title">Our Gallery</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto" data-translate="gallery_subtitle">Take a glimpse at our salon and the beautiful transformations we create for our clients.</p>
+                <div class="w-24 h-1 bg-secondary mx-auto mt-6"></div>
+            </div>
+            <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Gallery images are injected here by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-24 bg-pink-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-playfair font-bold text-gray-800 mb-4" data-translate="team_title">Meet Our Expert Team</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto" data-translate="team_subtitle">Our talented professionals are dedicated to helping you look and feel your best.</p>
+                <div class="w-24 h-1 bg-secondary mx-auto mt-6"></div>
+            </div>
+            <div id="team-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Team members are injected here by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-playfair font-bold text-dark mb-4" data-translate="testimonials_title">Client Testimonials</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto" data-translate="testimonials_subtitle">Hear what our clients have to say about their experiences.</p>
+                <div class="w-24 h-1 bg-secondary mx-auto mt-6"></div>
+            </div>
+            <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonials are injected here by JS -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact & Booking Section -->
+    <section id="contact" class="py-20 bg-accent">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-playfair font-bold text-dark mb-4" data-translate="contact_title">Get In Touch</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto" data-translate="contact_subtitle">Schedule your visit or send us a message. We're happy to help.</p>
+                <div class="w-24 h-1 bg-secondary mx-auto mt-6"></div>
+            </div>
+            <div class="bg-white rounded-lg shadow-xl overflow-hidden flex flex-col md:flex-row">
+                <div class="md:w-1/2 p-8 lg:p-12">
+                    <h3 class="text-2xl font-playfair font-bold text-dark mb-6" data-translate="contact_info_title"></h3>
+                    <div id="contact-info-container" class="space-y-6">
+                        <!-- Contact info is injected by JS -->
+                    </div>
+                </div>
+                <div class="md:w-1/2 p-8 lg:p-12 bg-gradient-to-br from-secondary/5 to-primary/10">
+                    <h3 class="text-2xl font-playfair font-bold text-dark mb-6" data-translate="form_title"></h3>
+                    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-4">
+                        <input type="text" name="name" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" data-placeholder="form_name" required>
+                        <input type="email" name="email" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" data-placeholder="form_email" required>
+                        <select name="service" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" required id="form-service-select">
+                            <!-- Service options are injected by JS -->
+                        </select>
+                        <textarea name="message" rows="4" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" data-placeholder="form_requests"></textarea>
+                        <button type="submit" class="w-full bg-secondary hover:bg-primary text-white font-medium py-3 px-8 rounded-full transition-colors duration-300 shadow-md" data-translate="form_btn"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section id="location" class="relative">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3304.851928099301!2d-118.40118038478411!3d34.07362228060068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2bc35fbd217ef%3A0x26949c8f3a3737b!2sRodeo%20Dr%2C%20Beverly%20Hills%2C%20CA%2090210%2C%20USA!5e0!3m2!1sen!2s" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+    
+    <!-- Sub-Footer -->
+    <footer class="bg-dark">
+        <div class="container mx-auto px-4 py-6 text-center text-gray-400">
+            © 2024 <span data-translate="studio_name_footer">Serenity Beauty Salon</span>. <span data-translate="footer_rights">All rights reserved.</span>
+        </div>
+    </footer>
+    
+    <!-- Floating UI Elements -->
+    <div id="language-switcher" class="language-switcher">
+        <button id="lang-toggle-btn" class="w-14 h-14 rounded-full bg-white/95 backdrop-blur-sm text-dark flex items-center justify-center shadow-xl text-2xl font-bold"></button>
+        <div class="options absolute bottom-full mb-2 bg-white/95 backdrop-blur-sm shadow-lg rounded-lg overflow-hidden"></div>
+    </div>
+    <div id="social-floater" class="social-floater">
+        <a href="https://wa.me/15551234567" target="_blank" class="social-icon w-12 h-12 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg"><i class="fab fa-whatsapp text-2xl"></i></a>
+        <a href="https://instagram.com/yourprofile" target="_blank" class="social-icon w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white flex items-center justify-center shadow-lg"><i class="fab fa-instagram text-2xl"></i></a>
+        <a href="https://facebook.com/yourprofile" target="_blank" class="social-icon w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg"><i class="fab fa-facebook-f text-2xl"></i></a>
+        <button id="social-toggle-btn" class="w-14 h-14 rounded-full bg-secondary text-white flex items-center justify-center shadow-xl transform transition-transform duration-300"><i class="fas fa-share-alt text-2xl"></i></button>
+    </div>
+
+    <script>
+        // =================================================================
+        // DATA & TRANSLATIONS (All content is managed here)
+        // =================================================================
+
+        const translations = {
+            en: {
+                studio_name: "Serenity", studio_name_footer: "Serenity Beauty Salon",
+                nav_home: "Home", nav_services: "Services", nav_about: "About", nav_gallery: "Gallery", nav_team: "Team", nav_testimonials: "Testimonials", nav_contact: "Contact",
+                hero_title: "Discover Your Natural Beauty",
+                hero_subtitle: "Experience luxury treatments that rejuvenate your body and soul. Our expert stylists are dedicated to enhancing your natural beauty.",
+                hero_btn: "Book Appointment",
+                services_title: "Our Premium Services",
+                services_subtitle: "Discover our range of luxury treatments designed to pamper, rejuvenate, and enhance your natural beauty.",
+                about_title: "About Serenity Beauty Salon",
+                about_p1: "Founded in 2010, Serenity Beauty Salon has been dedicated to providing exceptional beauty services in a relaxing and luxurious environment. Our mission is to enhance your natural beauty and boost your confidence through our premium treatments.",
+                about_p2: "Our team of certified professionals is passionate about beauty and committed to delivering personalized services that meet your unique needs. We use only the highest quality products that are gentle on your skin and environmentally friendly.",
+                about_btn: "Contact Us",
+                gallery_title: "Our Gallery",
+                gallery_subtitle: "Take a glimpse at our salon and the beautiful transformations we create for our clients.",
+                team_title: "Meet Our Expert Team",
+                team_subtitle: "Our talented professionals are dedicated to helping you look and feel your best.",
+                testimonials_title: "Client Testimonials",
+                testimonials_subtitle: "Hear what our clients have to say about their experiences.",
+                contact_title: "Get In Touch",
+                contact_subtitle: "Schedule your visit or send us a message. We're happy to help.",
+                form_title: "Book an Appointment",
+                form_name: "Your Name", form_email: "Email Address", form_service: "Select Service", form_service_option_none: "Choose a service...", form_requests: "Special Requests...", form_btn: "Book Now",
+                contact_info_title: "Contact Info", contact_info_address: "Address", contact_info_phone: "Phone", contact_info_email: "Email",
+                footer_rights: "All rights reserved.", learn_more: "Learn More",
+            },
+            al: {
+                studio_name: "Serenity", studio_name_footer: "Sallon Bukurie Serenity",
+                nav_home: "Kryefaqja", nav_services: "Shërbimet", nav_about: "Rreth Nesh", nav_gallery: "Galeria", nav_team: "Ekipi", nav_testimonials: "Vlerësimet", nav_contact: "Kontakti",
+                hero_title: "Zbuloni Bukurinë Tuaj Natyrale",
+                hero_subtitle: "Përjetoni trajtime luksoze që rigjenerojnë trupin dhe shpirtin tuaj. Stilistët tanë ekspertë janë të përkushtuar për të përmirësuar bukurinë tuaj natyrale.",
+                hero_btn: "Rezervo Takim",
+                services_title: "Shërbimet Tona Premium",
+                services_subtitle: "Zbuloni gamën tonë të trajtimeve luksoze të dizajnuara për t'ju përkëdhelur, rigjeneruar dhe përmirësuar bukurinë tuaj natyrale.",
+                about_title: "Rreth Sallonit Serenity",
+                about_p1: "I themeluar në vitin 2010, Salloni i Bukurisë Serenity është përkushtuar në ofrimin e shërbimeve të jashtëzakonshme të bukurisë në një mjedis relaksues dhe luksoz. Misioni ynë është të rrisim bukurinë tuaj natyrale dhe të rrisim besimin tuaj përmes trajtimeve tona premium.",
+                about_p2: "Ekipi ynë i profesionistëve të certifikuar është i apasionuar pas bukurisë dhe i përkushtuar për të ofruar shërbime të personalizuara që plotësojnë nevojat tuaja unike. Ne përdorim vetëm produkte të cilësisë më të lartë që janë të buta për lëkurën tuaj dhe miqësore me mjedisin.",
+                about_btn: "Na Kontaktoni",
+                gallery_title: "Galeria Jonë",
+                gallery_subtitle: "Hidhni një sy në sallonin tonë dhe transformimet e bukura që krijojmë për klientët tanë.",
+                team_title: "Njihuni me Ekipin Tonë Ekspert",
+                team_subtitle: "Profesionistët tanë të talentuar janë të përkushtuar t'ju ndihmojnë të dukeni dhe të ndiheni më mirë.",
+                testimonials_title: "Vlerësimet e Klientëve",
+                testimonials_subtitle: "Dëgjoni çfarë thonë klientët tanë për përvojat e tyre.",
+                contact_title: "Na Kontaktoni",
+                contact_subtitle: "Caktoni vizitën tuaj ose na dërgoni një mesazh. Jemi të lumtur t'ju ndihmojmë.",
+                form_title: "Rezervoni një Takim",
+                form_name: "Emri juaj", form_email: "Adresa Email", form_service: "Zgjidhni Shërbimin", form_service_option_none: "Zgjidhni një shërbim...", form_requests: "Kërkesa Speciale...", form_btn: "Rezervo Tani",
+                contact_info_title: "Informacion Kontakti", contact_info_address: "Adresa", contact_info_phone: "Telefoni", contact_info_email: "Email",
+                footer_rights: "Të gjitha të drejtat e rezervuara.", learn_more: "Mëso Më Shumë",
+            }
+        };
+
+        const services = [
+            { id: 'facial', icon: 'fa-spa', title_en: 'Facial Treatments', title_al: 'Trajtime Fytyre', desc_en: 'Rejuvenate your skin with our customized facial treatments.', desc_al: 'Rigjeneroni lëkurën tuaj me trajtimet tona të personalizuara.', subs: [{en: 'Classic Facial', al: 'Facial Klasik', price: '65€'}, {en: 'HydraFacial', al: 'HydraFacial', price: '150€'}, {en: 'Anti-Aging Facial', al: 'Facial Anti-Plakje', price: '90€'}, {en: 'Deep Cleansing', al: 'Pastrim i Thellë', price: '75€'}]},
+            { id: 'hair', icon: 'fa-cut', title_en: 'Hair Styling', title_al: 'Stilim Flokësh', desc_en: 'Expert cuts, coloring, and styling to match your personality.', desc_al: 'Prerje, ngjyrosje dhe stilim ekspert për t\'iu përshtatur personalitetit tuaj.', subs: [{en: 'Women\'s Cut & Style', al: 'Prerje & Stilim (F)', price: '55€'}, {en: 'Men\'s Cut', al: 'Prerje (M)', price: '25€'}, {en: 'Full Coloring', al: 'Ngjyrosje e Plotë', price: '80€+'}, {en: 'Balayage/Highlights', al: 'Balayage/Fije', price: '120€+'}]},
+            { id: 'nails', icon: 'fa-hands', title_en: 'Nail Care', title_al: 'Kujdesi për Thonjtë', desc_en: 'Luxurious nail care to keep your hands and feet looking beautiful.', desc_al: 'Kujdes luksoz për thonjtë për t\'i mbajtur duart dhe këmbët tuaja të bukura.', subs: [{en: 'Classic Manicure', al: 'Manikyr Klasik', price: '35€'}, {en: 'Gel Manicure', al: 'Manikyr me Xhel', price: '45€'}, {en: 'Luxury Pedicure', al: 'Pedikyr Luksoz', price: '55€'}, {en: 'Nail Art', al: 'Art në Thonj', price: '15€+'}]},
+            { id: 'massage', icon: 'fa-hot-tub', title_en: 'Massage Therapy', title_al: 'Terapi Masazhi', desc_en: 'Relieve stress and reduce pain with our therapeutic techniques.', desc_al: 'Lehtësoni stresin dhe reduktoni dhimbjen me teknikat tona terapeutike.', subs: [{en: 'Swedish Massage (60min)', al: 'Masazh Suedez (60min)', price: '75€'}, {en: 'Deep Tissue (60min)', al: 'Masazh i Thellë (60min)', price: '90€'}, {en: 'Hot Stone Massage', al: 'Masazh me Gurë të Nxehtë', price: '110€'}, {en: 'Aromatherapy Massage', al: 'Masazh Aromaterapie', price: '85€'}]},
+            { id: 'makeup', icon: 'fa-magic', title_en: 'Makeup Services', title_al: 'Shërbime Grimi', desc_en: 'Professional makeup application for any special occasion.', desc_al: 'Aplikim profesional grimi për çdo rast të veçantë.', subs: [{en: 'Day Makeup', al: 'Grim Dite', price: '55€'}, {en: 'Evening/Event Makeup', al: 'Grim Mbrëmje/Eventi', price: '75€'}, {en: 'Bridal Makeup', al: 'Grim Nuserie', price: '150€'}, {en: 'Lash Extensions', al: 'Extension Qerpikësh', price: '80€'}]},
+            { id: 'body', icon: 'fa-leaf', title_en: 'Body Treatments', title_al: 'Trajtime Trupi', desc_en: 'Revitalize your body with our luxurious scrubs and wraps.', desc_al: 'Rigjallëroni trupin tuaj me skrabët dhe mbështjelljet tona luksoze.', subs: [{en: 'Full Body Scrub', al: 'Scrub i Plotë Trupi', price: '85€'}, {en: 'Detoxifying Wrap', al: 'Mbështjellje Detox', price: '110€'}, {en: 'Cellulite Treatment', al: 'Trajtim Celuliti', price: '95€'}]}
+        ];
+        
+        const galleryImages = ["https://i.imgur.com/Kz589IQ.png", "https://i.imgur.com/QG7PtNx.png", "https://i.imgur.com/1P2g604.png", "https://i.imgur.com/01J8rC2.png", "https://i.imgur.com/595ljsk.png", "https://i.imgur.com/6vDYIPL.png"];
+        
+        const teamMembers = [
+            { id: 'arta', name: 'Arta', title_en: 'Founder & Master Stylist', title_al: 'Themeluese & Stiliste Mjeshtre', desc_en: 'With over 15 years of experience, Arta leads our team with passion and creativity.', desc_al: 'Me mbi 15 vjet përvojë, Arta udhëheq ekipin tonë me pasion dhe kreativitet.', color: 'pink', socials: ['instagram', 'facebook', 'twitter'] },
+            { id: 'elona', name: 'Elona', title_en: 'Senior Colorist', title_al: 'Specialiste e Lartë Ngjyrash', desc_en: "Elona's innovative color techniques have earned her recognition in the beauty industry.", desc_al: 'Teknikat inovative të Elones në ngjyrosje i kanë sjellë njohje në industrinë e bukurisë.', color: 'purple', socials: ['instagram', 'facebook'] },
+            { id: 'edita', name: 'Edita', title_en: 'Lead Esthetician', title_al: 'Estetiste Kryesore', desc_en: 'Edita specializes in facials and skincare treatments that deliver visible results.', desc_al: 'Edita specializohet në trajtime fytyre dhe lëkure që japin rezultate të dukshme.', color: 'blue', socials: ['instagram', 'linkedin'] },
+            { id: 'vjosa', name: 'Vjosa', title_en: 'Massage Therapist', title_al: 'Terapiste Masazhi', desc_en: 'Vjosa combines various massage techniques to provide a truly therapeutic experience.', desc_al: 'Vjosa kombinon teknika të ndryshme masazhi për të ofruar një përvojë vërtet terapeutike.', color: 'teal', socials: ['facebook', 'youtube'] }
+        ];
+
+        const testimonials = [
+            { name: 'Anisa Berisha', role_en: 'Regular Client', role_al: 'Kliente e Rregullt', quote_en: "I've been a loyal client at Serenity for years. Arta's haircuts are pure magic, and the relaxing atmosphere is unmatched. I always leave feeling refreshed and beautiful. The facials are my absolute favorite!", quote_al: "Jam kliente besnike te Serenity prej vitesh. Prerjet e Artës janë magjike, dhe atmosfera relaksuese është e pakrahasueshme. Gjithmonë largohem e freskët dhe e bukur. Facial-et janë të preferuarat e mia!" },
+            { name: 'Liridon Krasniqi', role_en: 'New Client', role_al: 'Klient i Ri', quote_en: "I was recommended by a friend and it was the best decision! The massage therapy was incredible, completely relieved my back tension. The staff is very professional and welcoming. Will be back for sure.", quote_al: "U rekomandova nga një mik dhe ishte vendimi më i mirë! Terapia e masazhit ishte e pabesueshme, ma hoqi plotësisht tensionin e shpinës. Stafi është shumë profesional dhe mikpritës. Do të kthehem me siguri." },
+            { name: 'Elira Gashi', role_en: 'Loyal Client', role_al: 'Kliente Besnike', quote_en: "The best nail salon in town! My gel manicures last for weeks without chipping. The team is so talented with nail art. It's my little monthly treat to myself. Highly recommend!", quote_al: "Salloni më i mirë i thonjve në qytet! Manikyrët e mi me xhel zgjasin me javë pa u prishur. Ekipi është kaq i talentuar me artin e thonjve. Është kënaqësia ime e vogël mujore. E rekomandoj fort!" }
+        ];
+
+        // =================================================================
+        // DYNAMIC RENDERING FUNCTIONS
+        // =================================================================
+
+        function renderNav() {
+            const navKeys = ['home', 'services', 'about', 'gallery', 'team', 'testimonials', 'contact'];
+            document.getElementById('desktop-nav').innerHTML = navKeys.map(k => `<a href="#${k}" class="nav-link font-medium text-gray-700 hover:text-secondary transition-colors" data-translate="nav_${k}"></a>`).join('');
+            document.getElementById('mobile-nav').innerHTML = navKeys.map(k => `<a href="#${k}" class="font-medium text-gray-700 hover:text-secondary transition-colors py-2 mobile-link" data-translate="nav_${k}"></a>`).join('');
+        }
+        
+        function renderServices() {
+            document.getElementById('services-grid').innerHTML = services.map(s => `
+                <div class="service-card bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4"><div class="w-16 h-16 rounded-full bg-accent flex items-center justify-center mr-4"><i class="fas ${s.icon} text-3xl text-secondary"></i></div><h3 class="text-xl font-playfair font-bold text-dark" data-translate="service_title_${s.id}"></h3></div>
+                        <p class="text-gray-600 mb-4 h-20" data-translate="service_desc_${s.id}"></p>
+                        <button class="details-btn text-dark hover:text-secondary transition-colors font-medium w-full flex justify-between items-center py-2"><span data-translate="learn_more"></span><i class="details-arrow fas fa-chevron-right ml-1 transition-transform"></i></button>
+                    </div>
+                    <div class="sub-services bg-gray-50 px-6"><div class="py-4 space-y-3">${s.subs.map((sub, i) => `<div class="flex justify-between border-b border-primary/20 pb-2"><span class="text-gray-700" data-translate="subservice_${s.id}_${i}_name"></span><span class="text-gray-800 font-medium">${sub.price}</span></div>`).join('')}</div></div>
+                </div>`).join('');
+        }
+
+        function renderTeam() {
+            document.getElementById('team-grid').innerHTML = teamMembers.map(member => `
+                <div class="bg-white rounded-lg overflow-hidden shadow-md text-center">
+                    <div class="h-64 bg-${member.color}-100 flex items-center justify-center">
+                        <i class="fas fa-user text-6xl text-${member.color}-300"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold playfair text-gray-800 mb-1">${member.name}</h3>
+                        <p class="text-${member.color}-500 mb-3" data-translate="team_title_${member.id}"></p>
+                        <p class="text-gray-600 mb-4 text-sm h-20" data-translate="team_desc_${member.id}"></p>
+                        <div class="flex space-x-3 justify-center">
+                            ${member.socials.map(social => `<a href="#" class="text-${member.color}-400 hover:text-${member.color}-600"><i class="fab fa-${social}"></i></a>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderGallery() { document.getElementById('gallery-grid').innerHTML = galleryImages.map(url => `<div class="gallery-img rounded-lg overflow-hidden shadow-md h-64"><img src="${url}" alt="Salon Work" class="w-full h-full object-cover"></div>`).join(''); }
+        
+        function renderTestimonials() { document.getElementById('testimonials-grid').innerHTML = testimonials.map((t, i) => `<div class="testimonial-card bg-accent p-8 rounded-lg shadow-lg transition-all duration-300 hover:scale-103"><div class="flex items-center mb-4"><div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl">${t.name.charAt(0)}</div><div class="ml-4"><h4 class="font-bold text-dark">${t.name}</h4><p class="text-gray-500 text-sm" data-translate="testimonial_role_${i}"></p></div></div><div class="mb-4 text-secondary">${'<i class="fas fa-star"></i>'.repeat(5)}</div><p class="text-gray-600 italic" data-translate="testimonial_quote_${i}"></p></div>`).join(''); }
+
+        function renderContactInfo() {
+            document.getElementById('contact-info-container').innerHTML = `
+                <h3 class="text-2xl font-playfair font-bold text-dark mb-6" data-translate="contact_info_title"></h3>
+                <div class="space-y-6">
+                    <div class="flex items-start"><div class="text-secondary mr-4 mt-1"><i class="fas fa-map-marker-alt"></i></div><div><h4 class="font-bold text-dark" data-translate="contact_info_address"></h4><p class="text-gray-600">123 Beauty Street, NY 10001</p></div></div>
+                    <div class="flex items-start"><div class="text-secondary mr-4 mt-1"><i class="fas fa-phone"></i></div><div><h4 class="font-bold text-dark" data-translate="contact_info_phone"></h4><p class="text-gray-600">(123) 456-7890</p></div></div>
+                    <div class="flex items-start"><div class="text-secondary mr-4 mt-1"><i class="fas fa-envelope"></i></div><div><h4 class="font-bold text-dark" data-translate="contact_info_email"></h4><p class="text-gray-600">info@serenity.com</p></div></div>
+                </div>`;
+        }
+
+        function renderFormOptions() { document.getElementById('form-service-select').innerHTML = `<option value="" data-translate="form_service_option_none"></option>${services.map(s => `<option value="${s.id}" data-translate="service_title_${s.id}"></option>`).join('')}`; }
+        
+        function prepareDynamicTranslations() {
+            services.forEach(s => {
+                translations.en[`service_title_${s.id}`] = s.title_en; translations.al[`service_title_${s.id}`] = s.title_al;
+                translations.en[`service_desc_${s.id}`] = s.desc_en; translations.al[`service_desc_${s.id}`] = s.desc_al;
+                s.subs.forEach((sub, i) => { translations.en[`subservice_${s.id}_${i}_name`] = sub.en; translations.al[`subservice_${s.id}_${i}_name`] = sub.al; });
+            });
+            teamMembers.forEach(member => {
+                translations.en[`team_title_${member.id}`] = member.title_en; translations.al[`team_title_${member.id}`] = member.title_al;
+                translations.en[`team_desc_${member.id}`] = member.desc_en; translations.al[`team_desc_${member.id}`] = member.desc_al;
+            });
+            testimonials.forEach((t, i) => {
+                translations.en[`testimonial_role_${i}`] = t.role_en; translations.al[`testimonial_role_${i}`] = t.role_al;
+                translations.en[`testimonial_quote_${i}`] = t.quote_en; translations.al[`testimonial_quote_${i}`] = t.quote_al;
+            });
+        }
+        
+        // =================================================================
+        // LANGUAGE SWITCHER & UI LOGIC
+        // =================================================================
+        const languageSwitcher = document.getElementById('language-switcher');
+        const langToggleButton = document.getElementById('lang-toggle-btn');
+        const langOptionsContainer = languageSwitcher.querySelector('.options');
+        const supportedLangs = { en: { name: 'EN', flag: '🇬🇧' }, al: { name: 'AL', flag: '🇦🇱' } };
+
+        function switchLanguage(lang) {
+            document.querySelectorAll('[data-translate]').forEach(el => el.innerHTML = translations[lang][el.dataset.translate] || el.innerHTML);
+            document.querySelectorAll('[data-placeholder]').forEach(el => el.placeholder = translations[lang][el.dataset.placeholder] || el.placeholder);
+            document.documentElement.lang = lang;
+            localStorage.setItem('preferredLanguage', lang);
+            updateLangSwitcherUI(lang);
+        }
+
+        function updateLangSwitcherUI(currentLang) {
+            langToggleButton.innerHTML = `<span>${supportedLangs[currentLang].flag}</span>`;
+            langOptionsContainer.innerHTML = Object.keys(supportedLangs).filter(l => l !== currentLang).map(l => `<button data-lang="${l}" class="lang-option w-full text-left flex items-center gap-2 px-4 py-2 hover:bg-gray-200"><span>${supportedLangs[l].flag}</span><span>${supportedLangs[l].name}</span></button>`).join('');
+            document.querySelectorAll('.lang-option').forEach(btn => btn.addEventListener('click', () => {
+                switchLanguage(btn.dataset.lang);
+                languageSwitcher.classList.remove('active');
+            }));
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            prepareDynamicTranslations();
+            renderNav();
+            renderServices();
+            renderGallery();
+            renderTeam();
+            renderTestimonials();
+            renderContactInfo();
+            renderFormOptions();
+
+            const preferredLanguage = localStorage.getItem('preferredLanguage') || 'en';
+            switchLanguage(preferredLanguage);
+            
+            // Event Listeners
+            const socialFloater = document.getElementById('social-floater');
+            const socialToggleButton = document.getElementById('social-toggle-btn');
+            const mobileMenuButton = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            langToggleButton.addEventListener('click', e => { e.stopPropagation(); languageSwitcher.classList.toggle('active'); });
+            socialToggleButton.addEventListener('click', e => { e.stopPropagation(); socialFloater.classList.toggle('active'); });
+            document.addEventListener('click', () => { languageSwitcher.classList.remove('active'); socialFloater.classList.remove('active'); });
+            
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+            document.getElementById('services-grid').addEventListener('click', e => {
+                const detailsButton = e.target.closest('.details-btn');
+                if (detailsButton) detailsButton.closest('.service-card').classList.toggle('active');
+            });
+            
+            window.addEventListener('scroll', () => {
+                document.getElementById('navbar').classList.toggle('py-2', window.scrollY > 50);
+                document.getElementById('navbar').classList.toggle('py-3', window.scrollY <= 50);
+            });
+        });
+    </script>
+</body>
+</html>
